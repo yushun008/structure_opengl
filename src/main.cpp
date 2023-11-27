@@ -1,6 +1,10 @@
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
 #include <iostream>
+#include "utils/shader.hpp"
+
+std::string vertex_src_path = "/Volumes/develop/develop/learn_opengl/structured_opengl/Shader/vertex.vert";
+std::string fragment_src_path = "/Volumes/develop/develop/learn_opengl/structured_opengl/Shader/fragment.frag";
 int main() {
     if (!glfwInit()) {
         std::cerr << "glfw init error!" << std::endl;
@@ -18,9 +22,11 @@ int main() {
         exit(-1);
     }
     glViewport(0, 0, 600, 600);
+    Utils::Shader shader(vertex_src_path, fragment_src_path);
     while (!glfwWindowShouldClose(window)) {
         glClear(GL_COLOR_BUFFER_BIT);
         glClearColor(0.3f, 0.2f, 0.6f, 0.2f);
+        shader.Use();
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
