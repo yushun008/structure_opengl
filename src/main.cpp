@@ -6,10 +6,6 @@
 #include "utils/gl_vertices.hpp"
 #include "utils/camera.hpp"
 
-//#define VAO_NUM 1
-//#define VBO_NUM 2
-//unsigned int vao[VAO_NUM];
-//unsigned int vbo[VBO_NUM];
 
 std::string vertex_src_path = "/Volumes/develop/develop/learn_opengl/structured_opengl/Shader/vertex.vert";
 std::string fragment_src_path = "/Volumes/develop/develop/learn_opengl/structured_opengl/Shader/fragment.frag";
@@ -29,21 +25,16 @@ int main() {
         std::cerr << "glad load opengl failed!" << std::endl;
         exit(-1);
     }
-    glViewport(0, 0, 600, 600);
 
-    std::cout << "init sphere" << std::endl;
-    Utils::Sphere sphere;
+    Utils::Sphere sphere(10, 10, 1);
     sphere.init();
     sphere.print_attr();
 
-    std::cout << "init glVertices" << std::endl;
     Utils::GLVertices glVertices;
     glVertices.set_vertex_data(sphere.points_coordinate(), sphere.vertices_size());
     glVertices.set_indices(sphere.indices(), sphere.indices_size());
-    std::cout << "init camera" << std::endl;
-    Utils::Camera camera;
 
-    std::cout << "init shader" << std::endl;
+    Utils::Camera camera;
     Utils::Shader shader(vertex_src_path, fragment_src_path);
     shader.Use();
     shader.setMat4f("projection_mat", camera.projection_mat());

@@ -20,7 +20,7 @@ namespace Utils {
         };
     public:
         Camera() {
-            _camera_coordinate = Vec3f(0, 2, 8);
+            _camera_coordinate = Vec3f(0, 2, 10);
             _camera_g = Vec3f(0, 0, 1);
             _camera_up = Vec3f(0, 1, 0);
             _camera_right = _camera_up.cross(_camera_g);
@@ -66,9 +66,10 @@ namespace Utils {
 
     private:
         void create_view_mat() {
-            _view_mat << _camera_right.transpose(), (-_camera_coordinate.x()),
-                    _camera_up.transpose(), (-_camera_coordinate.y()),
-                    _camera_g.transpose(), (-_camera_coordinate.z()),
+            std::cout << "camera right :\n" << _camera_right << std::endl;
+            _view_mat << _camera_right.transpose(), (-_camera_coordinate.dot(_camera_right)),
+                    _camera_up.transpose(), (-_camera_coordinate.dot(_camera_up)),
+                    _camera_g.transpose(), (-_camera_coordinate.dot(_camera_g)),
                     0, 0, 0, 1;
         }
 

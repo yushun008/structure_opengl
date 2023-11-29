@@ -25,6 +25,18 @@ namespace Utils {
             glGenVertexArrays(_vao_num, _vao);
         }
 
+        ~GLVertices() {
+            std::cout << "destroy GLVertices" << std::endl;
+            if (_vao) {
+                free(_vao);
+                _vao = nullptr;
+            }
+            if (_vbo) {
+                free(_vbo);
+                _vbo = nullptr;
+            }
+        }
+
         void set_vertex_data(float *data, unsigned int size) {
             glBindBuffer(GL_ARRAY_BUFFER, _vbo[0]);
             glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
@@ -46,8 +58,8 @@ namespace Utils {
         }
 
     public:
-        unsigned int *_vao;
-        unsigned int *_vbo;
+        unsigned int *_vao = nullptr;
+        unsigned int *_vbo = nullptr;
     private:
         int _vao_num;
         int _vbo_num;

@@ -22,7 +22,8 @@ namespace Utils {
 
         Sphere(unsigned int slice_num, unsigned int slice_vertices_num, unsigned int radius) :
                 _slice_num(slice_num), _slice_vertices_num(slice_vertices_num), _radius(radius) {
-            _triangle_num = 2 * _slice_vertices_num + (_slice_num - 2) * 2;
+            std::cout << "init Sphere" << std::endl;
+            _triangle_num = 2 * _slice_vertices_num + (_slice_num - 1) * _slice_vertices_num * 2;
             _vertices_num = (_slice_num - 1) * _slice_vertices_num + 2;
             _vertices_coordinate = std::make_shared<PointsCoordinate>(_vertices_num);
             _indices = std::make_shared<TrianglesIndices>(_triangle_num);
@@ -49,7 +50,9 @@ namespace Utils {
         }
 
         void init() {
+            std::cout << "calculate vertices coordinate" << std::endl;
             calculate_vertices_coordinate();
+            std::cout << "calculate indices" << std::endl;
             calculate_triangle_indices();
         }
 
