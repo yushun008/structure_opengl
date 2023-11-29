@@ -39,6 +39,8 @@ namespace Utils {
         }
 
         void setMat4f(const std::string &value_name, Mat4f value) {
+            std::cout << value_name << ":\n" << value << std::endl;
+            std::cout << "render program id:" << render_program_id << std::endl;
             glUniformMatrix4fv(glGetUniformLocation(render_program_id, value_name.c_str()), 1, GL_FALSE, value.data());
         }
 
