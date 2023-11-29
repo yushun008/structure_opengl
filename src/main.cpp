@@ -2,6 +2,14 @@
 #include "GLFW/glfw3.h"
 #include <iostream>
 #include "utils/shader.hpp"
+#include "utils/sphere.hpp"
+#include "utils/gl_vertices.hpp"
+#include "utils/camera.hpp"
+
+//#define VAO_NUM 1
+//#define VBO_NUM 2
+//unsigned int vao[VAO_NUM];
+//unsigned int vbo[VBO_NUM];
 
 std::string vertex_src_path = "/Volumes/develop/develop/learn_opengl/structured_opengl/Shader/vertex.vert";
 std::string fragment_src_path = "/Volumes/develop/develop/learn_opengl/structured_opengl/Shader/fragment.frag";
@@ -22,11 +30,31 @@ int main() {
         exit(-1);
     }
     glViewport(0, 0, 600, 600);
+
+    std::cout << "init sphere" << std::endl;
+    Utils::Sphere sphere;
+    sphere.init();
+    sphere.print_attr();
+
+    std::cout << "init glVertices" << std::endl;
+    Utils::GLVertices glVertices;
+    glVertices.set_vertex_data(sphere.points_coordinate(), sphere.vertices_size());
+    glVertices.set_indices(sphere.indices(), sphere.indices_size());
+    std::cout << "init camera" << std::endl;
+    Utils::Camera camera;
+
+    std::cout << "init shader" << std::endl;
     Utils::Shader shader(vertex_src_path, fragment_src_path);
+    shader.Use();
+    shader.setMat4f("projection_mat", camera.projection_mat());
+    shader.setMat4f("mv_mat", camera.view_mat());
     while (!glfwWindowShouldClose(window)) {
         glClear(GL_COLOR_BUFFER_BIT);
-        glClearColor(0.3f, 0.2f, 0.6f, 0.2f);
-        shader.Use();
+        glClearColor(0.2f, 0.2f, 0.2f, 0.2f);
+        glEnable(GL_DEPTH_TEST);
+        glDepthFunc(GL_LEQUAL);
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        glDrawElements(GL_TRIANGLES, sphere.triangle_vertices_num(), GL_UNSIGNED_INT, 0);
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
